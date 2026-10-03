@@ -14,6 +14,9 @@ public class FeatureManager {
         FEATURES.add(new SilentAim());
         FEATURES.add(new BreachSwap());
         FEATURES.add(new WindChargeMacro());
+        FEATURES.add(new InstantLunge());
+        FEATURES.add(new AutoPearlCatch());
+        FEATURES.add(new ShieldDrain());
         // Register more features here.
     }
 

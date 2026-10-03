@@ -13,6 +13,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.Comparator;
+import java.util.function.Predicate;
 
 public final class Aim {
     private Aim() {}
@@ -33,8 +34,13 @@ public final class Aim {
     }
 
     public static LivingEntity nearest(Minecraft mc, LocalPlayer self, double range, boolean playersOnly) {
+        return nearest(mc, self, range, playersOnly, e -> true);
+    }
+
+    public static LivingEntity nearest(Minecraft mc, LocalPlayer self, double range, boolean playersOnly,
+                                       Predicate<LivingEntity> extra) {
         AABB search = self.getBoundingBox().inflate(range + 1.0);
-        return mc.level.getEntitiesOfClass(LivingEntity.class, search, e -> isValid(self, e, playersOnly))
+        return mc.level.getEntitiesOfClass(LivingEntity.class, search, e -> isValid(self, e, playersOnly) && extra.test(e))
                 .stream()
                 .filter(e -> distSqr(self, e) <= range * range)
                 .min(Comparator.comparingDouble(e -> distSqr(self, e)))
@@ -43,8 +49,11 @@ public final class Aim {
 
     /** Yaw/pitch from the player's eyes to the middle of the target's hitbox. */
     public static float[] rotationTo(LocalPlayer self, LivingEntity target) {
+        return rotationToPoint(self, target.getBoundingBox().getCenter());
+    }
+
+    public static float[] rotationToPoint(LocalPlayer self, Vec3 t) {
         Vec3 eye = self.getEyePosition();
-        Vec3 t = target.getBoundingBox().getCenter();
         double dx = t.x - eye.x, dy = t.y - eye.y, dz = t.z - eye.z;
         double flat = Math.sqrt(dx * dx + dz * dz);
         float yaw = (float) (Math.toDegrees(Math.atan2(dz, dx)) - 90.0);

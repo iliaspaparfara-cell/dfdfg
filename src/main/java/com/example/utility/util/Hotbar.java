@@ -37,4 +37,14 @@ public final class Hotbar {
         }
         return false;
     }
+
+    /** True if the stack carries an enchantment whose registry id ends with the given name (e.g. "lunge"). */
+    public static boolean hasEnchantNamed(ItemStack stack, String name) {
+        ItemEnchantments enchants = stack.get(DataComponents.ENCHANTMENTS);
+        if (enchants == null) return false;
+        for (Holder<Enchantment> h : enchants.keySet()) {
+            if (h.getRegisteredName().endsWith(name)) return true;
+        }
+        return false;
+    }
 }
