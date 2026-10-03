@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
@@ -24,7 +25,7 @@ public final class Aim {
     }
 
     /** Squared distance from the player's eyes to the closest point of the target's hitbox. */
-    public static double distSqr(LocalPlayer self, LivingEntity e) {
+    public static double distSqr(LocalPlayer self, Entity e) {
         Vec3 eye = self.getEyePosition();
         AABB bb = e.getBoundingBox();
         double x = Mth.clamp(eye.x, bb.minX, bb.maxX);
@@ -48,7 +49,7 @@ public final class Aim {
     }
 
     /** Yaw/pitch from the player's eyes to the middle of the target's hitbox. */
-    public static float[] rotationTo(LocalPlayer self, LivingEntity target) {
+    public static float[] rotationTo(LocalPlayer self, Entity target) {
         return rotationToPoint(self, target.getBoundingBox().getCenter());
     }
 
@@ -70,7 +71,7 @@ public final class Aim {
      * Silent aim click: the server sees you look at the target and the click happens on it,
      * while your own camera never moves. Rotation is restored (and re-sent) right after.
      */
-    public static boolean silentClick(Minecraft mc, LocalPlayer p, LivingEntity target) {
+    public static boolean silentClick(Minecraft mc, LocalPlayer p, Entity target) {
         if (!p.hasLineOfSight(target)) return false;
 
         float oldYaw = p.getYRot(), oldPitch = p.getXRot();

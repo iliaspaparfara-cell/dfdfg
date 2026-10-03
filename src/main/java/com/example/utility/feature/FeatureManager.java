@@ -17,6 +17,8 @@ public class FeatureManager {
         FEATURES.add(new InstantLunge());
         FEATURES.add(new AutoPearlCatch());
         FEATURES.add(new ShieldDrain());
+        FEATURES.add(new AutoAnchor());
+        FEATURES.add(new CrystalAura());
         // Register more features here.
     }
 

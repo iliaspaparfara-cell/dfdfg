@@ -19,7 +19,7 @@ public class WindChargeMacro extends Feature {
     private int cd = 0;
 
     public WindChargeMacro() {
-        super("Wind Charge Macro", "Right-click with a mace to wind-charge launch.");
+        super("Wind Charge Macro", "Right-click with a mace to wind-charge launch.", Category.MACE);
     }
 
     @Override

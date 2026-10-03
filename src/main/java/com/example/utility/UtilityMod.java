@@ -1,5 +1,6 @@
 package com.example.utility;
 
+import com.example.utility.config.Config;
 import com.example.utility.feature.FeatureManager;
 import com.example.utility.gui.ClickGui;
 import com.mojang.blaze3d.platform.InputConstants;
@@ -13,6 +14,7 @@ public class UtilityMod implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         FeatureManager.init();
+        Config.load(false); // restore saved settings (modules stay off until you enable them)
 
         KeyMapping openGui = KeyBindingHelper.registerKeyBinding(new KeyMapping(
                 "Open Utility GUI", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_RIGHT_SHIFT, KeyMapping.Category.MISC));

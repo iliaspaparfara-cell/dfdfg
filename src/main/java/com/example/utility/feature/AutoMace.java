@@ -30,7 +30,7 @@ public class AutoMace extends Feature {
     private int delayTicks = 0;
 
     public AutoMace() {
-        super("Auto Mace", "Swaps to a mace and smashes while falling.");
+        super("Auto Mace", "Swaps to a mace and smashes while falling.", Category.MACE);
     }
 
     @Override

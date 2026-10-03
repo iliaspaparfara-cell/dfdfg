@@ -21,7 +21,7 @@ public class ShieldDrain extends Feature {
     private int cd = 0;
 
     public ShieldDrain() {
-        super("Shield Drain", "Repeatedly hits a blocking enemy's shield.");
+        super("Shield Drain", "Repeatedly hits a blocking enemy's shield.", Category.MACE);
     }
 
     @Override

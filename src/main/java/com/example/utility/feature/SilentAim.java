@@ -16,7 +16,7 @@ public class SilentAim extends Feature {
     private final Setting.Bool playersOnly = add(new Setting.Bool("Players Only", true));
 
     public SilentAim() {
-        super("Silent Aim", "Hold attack to hit the nearest target without turning.");
+        super("Silent Aim", "Hold attack to hit the nearest target without turning.", Category.COMBAT);
     }
 
     @Override

@@ -26,6 +26,10 @@ public abstract class Setting {
         public void toggle() {
             value = !value;
         }
+
+        public void set(boolean v) {
+            value = v;
+        }
     }
 
     public static class Num extends Setting {

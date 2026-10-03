@@ -26,7 +26,7 @@ public class BreachSwap extends Feature {
     private int previousSlot = -1;
 
     public BreachSwap() {
-        super("Breach Swap", "Swap to a breach mace right after a sword hit.");
+        super("Breach Swap", "Swap to a breach mace right after a sword hit.", Category.MACE);
         AttackEntityCallback.EVENT.register((player, level, hand, entity, hit) -> {
             onAttack(player, entity);
             return InteractionResult.PASS;

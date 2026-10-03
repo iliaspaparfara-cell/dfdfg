@@ -29,7 +29,7 @@ public class AutoPearlCatch extends Feature {
     private int wait = 0;
 
     public AutoPearlCatch() {
-        super("Auto Pearl Catch", "Wind-charges your own ender pearl mid-air.");
+        super("Auto Pearl Catch", "Wind-charges your own ender pearl mid-air.", Category.MACE);
     }
 
     @Override

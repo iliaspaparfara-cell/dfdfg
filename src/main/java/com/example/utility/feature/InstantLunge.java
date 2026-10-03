@@ -25,7 +25,7 @@ public class InstantLunge extends Feature {
     private int cd = 0;
 
     public InstantLunge() {
-        super("Instant Lunge", "Hold attack with a mace to lunge at a far enemy.");
+        super("Instant Lunge", "Hold attack with a mace to lunge at a far enemy.", Category.SPEAR);
     }
 
     private static boolean isSpear(ItemStack s) {

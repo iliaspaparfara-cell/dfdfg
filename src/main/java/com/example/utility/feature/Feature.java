@@ -9,12 +9,14 @@ import java.util.List;
 public abstract class Feature {
     private final String name;
     private final String description;
+    private final Category category;
     private final List<Setting> settings = new ArrayList<>();
     private boolean enabled;
 
-    protected Feature(String name, String description) {
+    protected Feature(String name, String description, Category category) {
         this.name = name;
         this.description = description;
+        this.category = category;
     }
 
     protected <T extends Setting> T add(T setting) {
@@ -24,6 +26,7 @@ public abstract class Feature {
 
     public String getName() { return name; }
     public String getDescription() { return description; }
+    public Category getCategory() { return category; }
     public List<Setting> getSettings() { return settings; }
     public boolean isEnabled() { return enabled; }
 
