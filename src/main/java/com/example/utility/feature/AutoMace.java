@@ -46,7 +46,7 @@ public class AutoMace extends Feature {
         boolean falling = !player.onGround()
                 && !player.onClimbable()
                 && !player.isInWater()
-                && !player.getAbilities().isFlying()
+                && !player.getAbilities().flying
                 && player.fallDistance >= minFall.get();
 
         if (!falling) {
