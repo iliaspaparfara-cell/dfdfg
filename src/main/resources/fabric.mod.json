@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "id": "utilitymod",
   "version": "1.0.0",
-  "name": "Utility Mod",
-  "description": "Client utility mod with a ClickGUI, Auto Mace and Silent Aim.",
+  "name": "Cookie Client",
+  "description": "Cookie Client - utility mod with a ClickGUI and mace PvP modules.",
   "environment": "client",
   "entrypoints": {
     "client": ["com.example.utility.UtilityMod"]
