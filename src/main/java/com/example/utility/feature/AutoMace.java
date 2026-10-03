@@ -2,8 +2,10 @@ package com.example.utility.feature;
 
 import com.example.utility.setting.Setting;
 import com.example.utility.util.Aim;
+import com.example.utility.util.Hotbar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.EntityHitResult;
@@ -11,6 +13,7 @@ import net.minecraft.world.phys.EntityHitResult;
 /**
  * While you are falling and an enemy is close, equips a mace from the hotbar,
  * clicks (optionally with silent aim), then swaps back to your old slot.
+ * Stun Slam: if the target is blocking with a shield, hit with an axe first, then the mace.
  */
 public class AutoMace extends Feature {
     private final Setting.Num minFall = add(new Setting.Num("Min Fall", 1.6, 1.5, 15, 0.1));
@@ -19,6 +22,7 @@ public class AutoMace extends Feature {
     private final Setting.Num attackDelay = add(new Setting.Num("Attack Delay", 4, 0, 20, 1));
     private final Setting.Bool autoAttack = add(new Setting.Bool("Auto Attack", true));
     private final Setting.Bool silentAim = add(new Setting.Bool("Silent Aim", true));
+    private final Setting.Bool stunSlam = add(new Setting.Bool("Stun Slam", true));
     private final Setting.Bool swapBack = add(new Setting.Bool("Swap Back", true));
     private final Setting.Bool playersOnly = add(new Setting.Bool("Players Only", true));
 
@@ -54,7 +58,7 @@ public class AutoMace extends Feature {
             return;
         }
 
-        int maceSlot = findMace(player);
+        int maceSlot = Hotbar.find(player, s -> s.is(Items.MACE));
         if (maceSlot < 0) return;
 
         if (Aim.nearest(mc, player, equipRange.get(), playersOnly.get()) == null) {
@@ -62,40 +66,41 @@ public class AutoMace extends Feature {
             return;
         }
 
-        equip(player, maceSlot);
-
-        if (!autoAttack.get() || delayTicks > 0) return;
-
-        boolean clicked = false;
+        // Pick the target we would hit this tick.
+        LivingEntity target = null;
         if (silentAim.get()) {
-            LivingEntity target = Aim.nearest(mc, player, reach.get(), playersOnly.get());
-            if (target != null) clicked = Aim.silentClick(mc, player, target);
+            target = Aim.nearest(mc, player, reach.get(), playersOnly.get());
         } else if (mc.hitResult instanceof EntityHitResult hit
-                && hit.getEntity() instanceof LivingEntity target
-                && Aim.isValid(player, target, playersOnly.get())) {
-            clicked = Aim.click(mc);
+                && hit.getEntity() instanceof LivingEntity e
+                && Aim.isValid(player, e, playersOnly.get())) {
+            target = e;
         }
 
-        if (clicked) delayTicks = (int) attackDelay.get();
-    }
+        // Stun slam: break the shield with an axe first.
+        int axeSlot = stunSlam.get() ? Hotbar.find(player, s -> s.is(ItemTags.AXES)) : -1;
+        boolean stun = target != null && axeSlot >= 0 && target.isBlocking();
 
-    private int findMace(LocalPlayer player) {
-        for (int i = 0; i < 9; i++) {
-            if (player.getInventory().getItem(i).is(Items.MACE)) return i;
-        }
-        return -1;
+        equip(player, stun ? axeSlot : maceSlot);
+
+        if (!autoAttack.get() || delayTicks > 0 || target == null) return;
+
+        boolean clicked = silentAim.get()
+                ? Aim.silentClick(mc, player, target)
+                : Aim.click(mc);
+
+        if (clicked) delayTicks = stun ? 1 : (int) attackDelay.get();
     }
 
     private void equip(LocalPlayer player, int slot) {
-        int current = player.getInventory().getSelectedSlot();
+        int current = Hotbar.selected(player);
         if (current == slot) return;
         if (previousSlot < 0) previousSlot = current;
-        player.getInventory().setSelectedSlot(slot);
+        Hotbar.select(player, slot);
     }
 
     private void restore(LocalPlayer player) {
         if (previousSlot >= 0 && swapBack.get()) {
-            player.getInventory().setSelectedSlot(previousSlot);
+            Hotbar.select(player, previousSlot);
         }
         previousSlot = -1;
     }

@@ -85,6 +85,21 @@ public final class Aim {
         return clicked;
     }
 
+    /** Runs an action while the server sees the given rotation; your camera is restored right after. */
+    public static void withRotation(LocalPlayer p, float yaw, float pitch, Runnable action) {
+        float oldYaw = p.getYRot(), oldPitch = p.getXRot();
+        sendRot(p, yaw, pitch);
+        p.setYRot(yaw);
+        p.setXRot(pitch);
+        try {
+            action.run();
+        } finally {
+            p.setYRot(oldYaw);
+            p.setXRot(oldPitch);
+            sendRot(p, oldYaw, oldPitch);
+        }
+    }
+
     private static void sendRot(LocalPlayer p, float yaw, float pitch) {
         p.connection.send(new ServerboundMovePlayerPacket.Rot(yaw, pitch, p.onGround(), p.horizontalCollision));
     }

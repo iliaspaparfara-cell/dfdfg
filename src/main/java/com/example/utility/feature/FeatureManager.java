@@ -12,6 +12,8 @@ public class FeatureManager {
     public static void init() {
         FEATURES.add(new AutoMace());
         FEATURES.add(new SilentAim());
+        FEATURES.add(new BreachSwap());
+        FEATURES.add(new WindChargeMacro());
         // Register more features here.
     }
 
