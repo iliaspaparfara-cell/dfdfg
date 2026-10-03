@@ -31,14 +31,14 @@ public class ClickGui extends Screen {
         boolean visit(Feature f, Setting s, int x, int y, int w, int h);
     }
 
-    private static final int[] ACCENTS = {0xFF3B82F6, 0xFF6366F1, 0xFF8B5CF6, 0xFFEC4899, 0xFF22C55E, 0xFFF97316};
-    private static final String[] ACCENT_NAMES = {"Blue", "Indigo", "Purple", "Pink", "Green", "Orange"};
+    private static final int[] ACCENTS = Theme.ACCENTS;
+    private static final String[] ACCENT_NAMES = Theme.NAMES;
 
     private static final int SW = 132, CARD_H = 34, SET_H = 18, ROW_GAP = 4;
-    private static final int NAVY = 0xFF0B0E1F;
-    private static final int C_WIN = 0xEB0A0D1E, C_SIDE = 0xF0070914;
-    private static final int C_CARD = 0xC0141836, C_CARD_HOVER = 0xC01B2148, C_SET = 0xB00D1128;
-    private static final int C_TEXT = 0xFFFFFFFF, C_DIM = 0xFF8D97B5, C_DIM2 = 0xFF5F6A8C;
+    private static final int NAVY = 0xFF0D0B24;
+    private static final int C_WIN = 0xEB0C0A22, C_SIDE = 0xF008061A;
+    private static final int C_CARD = 0xC01A1740, C_CARD_HOVER = 0xC0241F54, C_SET = 0xB0110D2D;
+    private static final int C_TEXT = 0xFFFFFFFF, C_DIM = 0xFF9A93BD, C_DIM2 = 0xFF6A6490;
 
     private static Category selectedCat = Category.COMBAT;
     private static Page page = Page.MODULES;
@@ -260,7 +260,7 @@ public class ClickGui extends Screen {
                 g.drawString(font, n.getName(), x + 8, y + 5, C_DIM, false);
                 int tx = x + w - 150, tw = 100;
                 double pct = (n.get() - n.getMin()) / (n.getMax() - n.getMin());
-                rrect(g, tx, y + 7, tw, 4, 2, 0xFF262C4A);
+                rrect(g, tx, y + 7, tw, 4, 2, 0xFF2C2654);
                 rrect(g, tx, y + 7, Math.max(4, (int) (tw * pct)), 4, 2, accent());
                 String val = String.format("%.1f", n.get());
                 g.drawString(font, val, x + w - 8 - font.width(val), y + 5, accentLight(), false);
@@ -415,7 +415,7 @@ public class ClickGui extends Screen {
     // ------------------------------------------------------------------ drawing helpers
 
     private void drawSwitch(GuiGraphics g, int x, int y, boolean on) {
-        rrect(g, x, y, 26, 12, 6, on ? accent() : 0xFF262C4A);
+        rrect(g, x, y, 26, 12, 6, on ? accent() : 0xFF2C2654);
         disc(g, on ? x + 19 : x + 7, y + 6, 4, C_TEXT);
     }
 
