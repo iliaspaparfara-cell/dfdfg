@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
@@ -35,5 +36,22 @@ public final class Interact {
         if (ok[0]) p.swing(InteractionHand.MAIN_HAND);
         Hotbar.select(p, previous);
         return ok[0];
+    }
+
+    private static final Direction[] ORDER = {
+            Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST, Direction.DOWN, Direction.UP};
+
+    /** Places the item in the slot into the given empty block position, clicking any solid neighbour. */
+    public static boolean placeBlock(Minecraft mc, LocalPlayer p, int slot, BlockPos target) {
+        BlockState st = mc.level.getBlockState(target);
+        if (!st.isAir() && !st.canBeReplaced()) return false;
+
+        for (Direction dir : ORDER) {
+            BlockPos neighbor = target.relative(dir);
+            BlockState ns = mc.level.getBlockState(neighbor);
+            if (ns.isAir() || ns.canBeReplaced() || !ns.getFluidState().isEmpty()) continue;
+            return useOn(mc, p, slot, neighbor, dir.getOpposite());
+        }
+        return false;
     }
 }

@@ -25,6 +25,9 @@ public class FeatureManager {
         FEATURES.add(new AutoRespawn());
         FEATURES.add(new AutoSprint());
         FEATURES.add(new AutoJump());
+        FEATURES.add(new NoFall());
+        FEATURES.add(new Scaffold());
+        FEATURES.add(new SpeedBridge());
         FEATURES.add(new ModuleList());
         FEATURES.add(new FallHud());
         FEATURES.add(new Fullbright());
