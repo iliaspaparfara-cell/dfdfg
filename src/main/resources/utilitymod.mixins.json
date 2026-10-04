@@ -3,7 +3,8 @@
   "package": "com.example.utility.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "MinecraftAccessor"
+    "MinecraftAccessor",
+    "EntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

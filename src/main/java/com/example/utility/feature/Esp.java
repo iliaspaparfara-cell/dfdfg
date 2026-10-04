@@ -12,10 +12,15 @@ import java.util.Set;
 
 /** Outlines players (or all living entities) through walls using the game's glow outline. */
 public class Esp extends Feature {
+    /** Entity ids the renderer should draw with the glow outline (read by EntityMixin). */
+    private static volatile Set<Integer> targets = Set.of();
+
+    public static boolean shouldGlow(Entity e) {
+        return !targets.isEmpty() && targets.contains(e.getId());
+    }
+
     private final Setting.Num range = add(new Setting.Num("Range", 64, 8, 128, 4));
     private final Setting.Bool playersOnly = add(new Setting.Bool("Players Only", true));
-
-    private Set<Integer> glowing = new HashSet<>();
 
     public Esp() {
         super("ESP", "Glow outline on entities, visible through walls.", Category.VISUAL);
@@ -23,33 +28,23 @@ public class Esp extends Feature {
 
     @Override
     protected void onDisable() {
-        Minecraft mc = Minecraft.getInstance();
-        if (mc.level != null) {
-            for (int id : glowing) {
-                Entity e = mc.level.getEntity(id);
-                if (e != null) e.setGlowingTag(false);
-            }
-        }
-        glowing = new HashSet<>();
+        targets = Set.of();
     }
 
     @Override
     public void onTick(Minecraft mc) {
         LocalPlayer player = mc.player;
-        if (player == null || mc.level == null) return;
+        if (player == null || mc.level == null) {
+            targets = Set.of();
+            return;
+        }
 
         Set<Integer> now = new HashSet<>();
         for (LivingEntity e : mc.level.getEntitiesOfClass(LivingEntity.class,
                 player.getBoundingBox().inflate(range.get()),
                 en -> en != player && en.isAlive() && (!playersOnly.get() || en instanceof Player))) {
-            e.setGlowingTag(true);
             now.add(e.getId());
         }
-        for (int id : glowing) {
-            if (now.contains(id)) continue;
-            Entity e = mc.level.getEntity(id);
-            if (e != null) e.setGlowingTag(false);
-        }
-        glowing = now;
+        targets = now;
     }
 }
