@@ -2,6 +2,7 @@ package com.example.utility.feature;
 
 import com.example.utility.setting.Setting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,4 +44,5 @@ public abstract class Feature {
     protected void onEnable() {}
     protected void onDisable() {}
     public void onTick(Minecraft mc) {}
+    public void onHud(GuiGraphics g, Minecraft mc) {}
 }

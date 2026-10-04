@@ -3,6 +3,7 @@ package com.example.utility.util;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -46,5 +47,9 @@ public final class Hotbar {
             if (h.getRegisteredName().endsWith(name)) return true;
         }
         return false;
+    }
+
+    public static boolean isSpear(ItemStack stack) {
+        return BuiltInRegistries.ITEM.getKey(stack.getItem()).getPath().endsWith("_spear");
     }
 }
